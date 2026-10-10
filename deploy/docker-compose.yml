@@ -1,0 +1,91 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: webmind-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-webmind}
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: mongo:7
+    container_name: webmind-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7
+    container_name: webmind-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../deploy/Dockerfile.backend
+    container_name: webmind-backend
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      MYSQL_HOST: mysql
+      MONGO_HOST: mongodb
+      MONGO_URL: mongodb://mongodb:27017
+      REDIS_HOST: redis
+      REDIS_URL: redis://redis:6379
+      DB_BACKEND: mysql
+      DOC_STORE_BACKEND: mongo
+      CACHE_BACKEND: redis
+      UPLOAD_DIR: /data/uploads
+      CODE_OUTPUT_DIR: /data/generated_code
+    ports:
+      - "8000:8000"
+    volumes:
+      - code_data:/data/generated_code
+      - upload_data:/data/uploads
+      - ../knowledge:/app/knowledge:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../deploy/Dockerfile.frontend
+    container_name: webmind-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  mongo_data:
+  redis_data:
+  code_data:
+  upload_data:

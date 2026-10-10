@@ -1,0 +1,8 @@
+{
+  "level": "level1",
+  "title": "用户登录页",
+  "pages": ["用户登录"],
+  "fields": ["用户名", "密码", "验证码"],
+  "functions": ["登录"],
+  "page_types": {"用户登录": "login"}
+}

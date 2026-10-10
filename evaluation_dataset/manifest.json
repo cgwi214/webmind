@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "description": "WebMind 评估基准数据集。对应《WebMind 项目评估体系设计》第 16 节与《评估体系两版对比与选型建议》第 11 节（Benchmark Matrix）。",
+  "regression_note": "回归时固定除一个变量外的其他维度（任务类型 × 复杂度 × Agent 版本 × Prompt 版本 × 模型版本），才能回答“新版 Agent 是否真的更好”。",
+  "samples": [
+    {
+      "id": "level1_login",
+      "level": "level1",
+      "title": "用户登录页",
+      "prd": "prd/level1_login.md",
+      "design": "design/level1_login.md",
+      "expected_output": "expected_output/level1_login.json",
+      "target_platforms": ["web"]
+    },
+    {
+      "id": "level1_list",
+      "level": "level1",
+      "title": "订单列表页",
+      "prd": "prd/level1_list.md",
+      "design": "design/level1_list.md",
+      "expected_output": "expected_output/level1_list.json",
+      "target_platforms": ["web"]
+    },
+    {
+      "id": "level2_user_admin",
+      "level": "level2",
+      "title": "用户管理后台",
+      "prd": "prd/sample_user_admin.md",
+      "design": "design/level2_user_admin.md",
+      "expected_output": "expected_output/level2_user_admin.json",
+      "target_platforms": ["web", "mp-weixin"]
+    },
+    {
+      "id": "level3_shop_admin",
+      "level": "level3",
+      "title": "电商后台",
+      "prd": "prd/level3_shop_admin.md",
+      "design": "design/level3_shop_admin.md",
+      "expected_output": "expected_output/level3_shop_admin.json",
+      "target_platforms": ["web"]
+    }
+  ]
+}
