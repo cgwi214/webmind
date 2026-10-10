@@ -1,0 +1,46 @@
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# =====================
+# Node
+# =====================
+node_modules/
+dist/
+.vite/
+*.local
+
+# =====================
+# 运行产物
+# =====================
+data/
+logs/
+*.log
+
+# =====================
+# 环境变量（仅 .env.example 模板入库，真实 .env 不入库）
+# =====================
+.env
+.env.local
+.env.production
+
+# =====================
+# 基准回归输出
+# =====================
+evaluation_dataset/result/*
+!evaluation_dataset/result/.gitkeep
+
+# =====================
+# 编辑器 / 系统
+# =====================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
